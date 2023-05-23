@@ -96,7 +96,7 @@ def main(input_file, output_file, n=None):
     # Load and process data
     df = pd.read_excel(f"../data/{input_file}.xlsx")
     df = process_responses(df, 'gpt-4')
-    #df.to_csv(f"../data/{output_file}.csv")
+    df.to_csv(f"../data/{output_file}.csv")
     return(df)
 
 
