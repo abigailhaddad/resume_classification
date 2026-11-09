@@ -1,15 +1,21 @@
+import re
 import pandas as pd
 from tabulate import tabulate
 
 def clean_response(text):
     """Clean the response received from GPT model."""
     text=str(text)
+    # A leading YES/NO word, any case ("No.", "yes, they do"), decides the answer,
+    # so a later "YES" in the explanation cannot flip a leading NO.
+    match = re.match(r"\W*(YES|NO)\b", text, flags=re.IGNORECASE)
+    if match:
+        return "Y" if match.group(1).upper() == "YES" else "N"
+    # Otherwise keep the original behavior.
     if "YES" in text:
         return "Y"
     elif "NO" in text:
         return "N"
-    else:
-        return text
+    return text
     
 
 def clean_data(df, engine, prompt_dict):
